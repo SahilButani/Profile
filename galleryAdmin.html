@@ -32,7 +32,7 @@
 					    <label><b>Information</b></label>
 					    <input type="text" placeholder="image info" name="information" required>
 					    <label><b>Uploaded Date</b></label>
-					    <input type="text" placeholder="YYYY-MM-DD" name="uploadedDate" required>
+					    <input type="date" name="uploadedDate" required>
 					    <div class="clearfix">
 				        	<button type="button" class="addbtn" title="Click to add a new image.">Add</button>
 				        	<button type="button" class="editbtn" title="Click to save the changes in the current image.">Edit/Save</button>
@@ -45,7 +45,7 @@
 <div>
 	<!--		<h1 id="about">Gallery Admin</h1>-->
 
-			<h3 style="text-align: center">Click on any Image to Edit/Add.</h3>
+			<h3 style="text-align: center">Click on any Image to Edit/Delete. Click here to add Image. <button class="addButton" onclick="defaultInfo()"><strong>Add</strong></button></h3>
 				<table id="imageTable">
 				</table>
 </div>

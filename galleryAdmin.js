@@ -1,5 +1,13 @@
+
+getJsonObjectLocally = function() {
+	return JSON.parse(localStorage.getItem('imagesJson'));
+}
+
+storeJsonObjectLocally = function() {
+	localStorage.setItem('imagesJson',JSON.stringify(obj));
+}
 function setImages(){
-	
+	storeJsonObjectLocally();
 	images = obj.images;
 	for(var i =0;i<images.length;i++){
 		var tableRef = document.getElementById('imageTable');
@@ -34,7 +42,27 @@ function setInfo(){
 	input_value[3].value = this.uploadedDate;
 	previous_image = this;
 }
-
+getCurrentDate_YYYYMMDD = function() {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1; 
+	var yyyy = today.getFullYear();
+	if (dd < 10) {
+  		dd = '0' + dd;
+	} 
+	if (mm < 10) {
+  		mm = '0' + mm;
+	} 
+	return yyyy + '-' + mm + '-' + dd;
+}
+function defaultInfo(){
+	modal.style.display = "block";
+	var input_value = document.getElementsByTagName("input");
+	input_value[0].value = "";
+	input_value[1].value = "";
+	input_value[2].value = "";
+	input_value[3].value =getCurrentDate_YYYYMMDD();
+}
 function load(){
 	setImages();
 	var images = document.getElementsByTagName("img");
@@ -89,10 +117,16 @@ function dataValidation(input_value){
 		alert("Uploaded date is invalid !!");
 		return false;
 	}
+	console.log(input_value[3].value);
 	return true;
 }
 
-var obj = JSON.parse(data);
+var obj;
+  if(getJsonObjectLocally() == null) {
+    obj = JSON.parse(data);
+  } else {
+    obj = getJsonObjectLocally();
+  }
 var modal = document.getElementById('myModal');
 var span = document.getElementsByClassName("close")[0];
 var edit = document.getElementsByClassName("editbtn")[0];
@@ -127,6 +161,7 @@ add.onclick = function(){
 
 
 		obj['images'].push({"name": input_value[0].value, "url" : input_value[1].value,"info":input_value[2].value, "uploadedDate": input_value[3].value, "id":new_image.id});
+		storeJsonObjectLocally();
 		new_image.addEventListener("click",setInfo);
 		td.appendChild(new_image);
 		modal.style.display = "none";
@@ -152,9 +187,11 @@ edit.onclick = function(){
 					previous_image.info = input_value[2].value;
 					previous_image.uploadedDate = input_value[3].value;
 					previous_image.alt = "Unable to load image";
+					storeJsonObjectLocally();
 			}
 		}
 		modal.style.display = "none";
+	
 		alert("Image has been updated !!");
 	}
 }
